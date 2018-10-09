@@ -18,9 +18,16 @@ permissions.
 #. The unix user account created for a JupyterHub user named ``<username>`` is
    ``jupyter-<username>``. This prefix helps prevent clashes with users that
    already exist - otherwise a user named ``root`` can trivially gain full root
-   access to your server.
+   access to your server. If the username (including the ``jupyter-`` prefix)
+   is longer than 26 characters, it is truncated at 26 characters & a 5 charcter
+   hash is appeneded to it. This keeps usernames under the linux username limit
+   of 32 characters while also reducing chances of collision.
 
 #. A home directory is created for the user under ``/home/jupyter-<username>``.
+
+#. The default permission of the home directory is change with ``o-rwx`` (remove
+   non-group members the ability to read, write or list files and folders in the
+   Home directory).
 
 #. No password is set for this unix system user by default. The password used
    to log in to JupyterHub (if using an authenticator that requires a password)
@@ -38,8 +45,8 @@ command on the terminal. No password required.
 
 This is a **lot** of power, and they can do pretty much anything they want to
 the server - look at other people's work, modify it, break the server in cool &
-funky ways, etc. This also means **if an admin's credentials are compromised (
-easy to guess password, password re-use, etc) the entire JupyterHub is compromised.**
+funky ways, etc. This also means **if an admin's credentials are compromised 
+(easy to guess password, password re-use, etc) the entire JupyterHub is compromised.**
 
 Off-boarding users securely
 ===========================
